@@ -26,17 +26,22 @@ looker.plugins.visualizations.add({
       // Crear contenedor para cada género
       const itemContainer = document.createElement("div");
       itemContainer.style.textAlign = "center";
+      itemContainer.style.backgroundColor = "#f3f1e3"; // Fondo común para ambos géneros
+      itemContainer.style.padding = "10px 0 20px"; // Espaciado en la parte superior e inferior
+      itemContainer.style.borderRadius = "8px"; // Bordes redondeados
 
       // Añadir ícono basado en el género
       const icon = document.createElement("img");
-      icon.src = gender === 'F' ? 'https://path_to_female_icon.png' : 'https://path_to_male_icon.png'; // Sustituye con las URLs de los íconos
-      icon.style.width = "60px";
-      icon.style.height = "60px";
+      icon.src = gender === 'F' 
+        ? 'https://cdn-icons-png.flaticon.com/512/5726/5726949.png'  // Ícono para mujer
+        : 'https://cdn-icons-png.flaticon.com/512/5726/5726939.png'; // Ícono para hombre
+      icon.style.width = "70px";
 
       // Añadir porcentaje debajo del ícono
       const percentageText = document.createElement("div");
       percentageText.textContent = `${percentage}%`;
       percentageText.style.fontSize = "20px";
+      percentageText.style.marginTop = "10px";
 
       // Añadir el ícono y el texto al contenedor
       itemContainer.appendChild(icon);
