@@ -1,6 +1,6 @@
 export default {
   create: function(element, config) {
-    element.innerHTML = "<div id='custom-vis'></div>";
+    element.innerHTML = "<div id='custom-vis'>hola</div>";
   },
 
   updateAsync: function(data, element, config, queryResponse, details, doneRendering) {
