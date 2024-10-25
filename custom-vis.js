@@ -1,6 +1,6 @@
 looker.plugins.visualizations.add({
   create: function(element, config) {
-    element.innerHTML = "<div id='custom-vis'>Cargando visualización...</div>";
+    element.innerHTML = "<div id='custom-vis' style='display: flex; justify-content: center; gap: 50px;'></div>";
   },
 
   updateAsync: function(data, element, config, queryResponse, details, doneRendering) {
@@ -8,36 +8,41 @@ looker.plugins.visualizations.add({
     const container = document.getElementById("custom-vis");
     container.innerHTML = "";
 
-    // Obtener la primera dimensión y medida de los datos
-    const dimension = queryResponse.fields.dimension_like[0].name;
-    const measure = queryResponse.fields.measure_like[0].name;
-
-    // Crear un SVG básico
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
-    svg.setAttribute("width", "100%");
-    svg.setAttribute("height", 300);
-
-    // Agregar barras para cada fila de datos
-    data.forEach((row, index) => {
-      const rect = document.createElementNS(svgNS, "rect");
-      rect.setAttribute("width", row[measure].value * 0.00001); // Ajusta el ancho a un valor visible
-      rect.setAttribute("height", 20);
-      rect.setAttribute("x", 0);
-      rect.setAttribute("y", index * 30);
-      rect.setAttribute("fill", "steelblue");
-
-      const text = document.createElementNS(svgNS, "text");
-      text.setAttribute("x", 5);
-      text.setAttribute("y", index * 30 + 15);
-      text.setAttribute("fill", "#FFF");
-      text.textContent = row[dimension].value;
-
-      svg.appendChild(rect);
-      svg.appendChild(text);
+    // Filtrar solo los valores de 'Masculino' y 'Femenino'
+    const filteredData = data.filter(row => {
+      const gender = row[queryResponse.fields.dimension_like[0].name].value;
+      return gender === 'M' || gender === 'F';
     });
 
-    container.appendChild(svg);
+    // Calcular el total para el porcentaje
+    const total = filteredData.reduce((sum, row) => sum + row[queryResponse.fields.measure_like[0].name].value, 0);
+
+    // Crear visualización de íconos
+    filteredData.forEach(row => {
+      const gender = row[queryResponse.fields.dimension_like[0].name].value;
+      const count = row[queryResponse.fields.measure_like[0].name].value;
+      const percentage = ((count / total) * 100).toFixed(0); // Calcular el porcentaje y redondear
+
+      // Crear contenedor para cada género
+      const itemContainer = document.createElement("div");
+      itemContainer.style.textAlign = "center";
+
+      // Añadir ícono basado en el género
+      const icon = document.createElement("img");
+      icon.src = gender === 'F' ? 'https://path_to_female_icon.png' : 'https://path_to_male_icon.png'; // Sustituye con las URLs de los íconos
+      icon.style.width = "60px";
+      icon.style.height = "60px";
+
+      // Añadir porcentaje debajo del ícono
+      const percentageText = document.createElement("div");
+      percentageText.textContent = `${percentage}%`;
+      percentageText.style.fontSize = "20px";
+
+      // Añadir el ícono y el texto al contenedor
+      itemContainer.appendChild(icon);
+      itemContainer.appendChild(percentageText);
+      container.appendChild(itemContainer);
+    });
 
     doneRendering();
   }
