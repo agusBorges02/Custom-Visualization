@@ -1,63 +1,76 @@
-// Este es un código de ejemplo de visualización personalizada en Looker
-import * as d3 from "d3";  // Asegúrate de que la librería que usas esté disponible
+// Cargar D3.js en el entorno
+let d3;
+(async () => {
+    if (!window.d3) {
+        const script = document.createElement("script");
+        script.src = "https://d3js.org/d3.v5.min.js";
+        script.onload = () => {
+            d3 = window.d3;
+            this.updateAsync(data, element, config, queryResponse, details, doneRendering);
+        };
+        document.head.appendChild(script);
+    } else {
+        d3 = window.d3;
+    }
+})();
 
 // Definir el módulo de visualización
 export default {
-  // Propiedades de la visualización
-  options: {
-    fontSize: {
-      type: "string",
-      label: "Tamaño de la fuente",
-      default: "12px"
+    options: {
+        fontSize: {
+            type: "string",
+            label: "Tamaño de la fuente",
+            default: "12px"
+        },
+        barColor: {
+            type: "string",
+            label: "Color de las barras",
+            default: "#4CAF50"
+        },
     },
-    barColor: {
-      type: "string",
-      label: "Color de las barras",
-      default: "#4CAF50"
+
+    create: function(element, config) {
+        element.innerHTML = "<div id='custom-vis'></div>";
     },
-  },
 
-  // Función para renderizar la visualización
-  create: function(element, config) {
-    // Crear un contenedor en el DOM para la visualización
-    element.innerHTML = `<div id="custom-vis"></div>`;
-  },
+    updateAsync: function(data, element, config, queryResponse, details, doneRendering) {
+        // Espera a que d3 esté disponible
+        if (!d3) return;
 
-  // Función que se ejecuta cada vez que cambian los datos o la configuración
-  updateAsync: function(data, element, config, queryResponse, details, doneRendering) {
-    // Limpiar cualquier visualización previa
-    d3.select("#custom-vis").html("");
+        console.log("Datos recibidos:", data);
+        console.log("Query Response:", queryResponse);
 
-    // Obtener los datos de Looker
-    const measure = queryResponse.fields.measure_like[0];
-    const dimension = queryResponse.fields.dimension_like[0];
+        // Limpiar cualquier visualización previa
+        d3.select("#custom-vis").html("");
 
-    // Configurar el gráfico de barras
-    const svg = d3.select("#custom-vis")
-                  .append("svg")
-                  .attr("width", "100%")
-                  .attr("height", 300);
+        const measure = queryResponse.fields.measure_like[0];
+        const dimension = queryResponse.fields.dimension_like[0];
 
-    const bars = svg.selectAll("rect")
-                    .data(data)
-                    .enter()
-                    .append("rect")
-                    .attr("width", (d) => d[measure.name].value * 10)  // Escala simple
-                    .attr("height", 20)
-                    .attr("y", (d, i) => i * 25)
-                    .attr("fill", config.barColor);  // Color personalizado desde la opción
+        // Configurar el gráfico de barras
+        const svg = d3.select("#custom-vis")
+                      .append("svg")
+                      .attr("width", "100%")
+                      .attr("height", 300);
 
-    // Agregar etiquetas de dimensión
-    svg.selectAll("text")
-       .data(data)
-       .enter()
-       .append("text")
-       .text((d) => d[dimension.name].value)
-       .attr("y", (d, i) => i * 25 + 15)
-       .attr("x", 5)
-       .attr("font-size", config.fontSize);  // Tamaño de fuente personalizado
+        const bars = svg.selectAll("rect")
+                        .data(data)
+                        .enter()
+                        .append("rect")
+                        .attr("width", (d) => d[measure.name].value * 10)  // Escala simple
+                        .attr("height", 20)
+                        .attr("y", (d, i) => i * 25)
+                        .attr("fill", config.barColor);  // Color personalizado desde la opción
 
-    // Notificar a Looker que la visualización ha terminado de renderizar
-    doneRendering();
-  }
+        // Agregar etiquetas de dimensión
+        svg.selectAll("text")
+           .data(data)
+           .enter()
+           .append("text")
+           .text((d) => d[dimension.name].value)
+           .attr("y", (d, i) => i * 25 + 15)
+           .attr("x", 5)
+           .attr("font-size", config.fontSize);  // Tamaño de fuente personalizado
+
+        doneRendering();
+    }
 };
