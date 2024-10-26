@@ -23,9 +23,9 @@ looker.plugins.visualizations.add({
     },
   
     updateAsync: function(data, element, config, queryResponse, details, doneRendering) {
-      // Nombres de los campos exactos según el SQL proporcionado
-      const estadiaFieldName = "datos_dashboard_estadia_promedio_distinct_visitors";
-      const pernoctesFieldName = "datos_dashboard_pernoctes_promedio_distinct_visitors";
+      // Nombres exactos de los campos según el .view
+      const estadiaFieldName = "estadia_promedio_distinct_visitors";
+      const pernoctesFieldName = "pernoctes_promedio_distinct_visitors";
   
       // Asignar los valores a las etiquetas correspondientes en el HTML
       const estadiaData = data[0][estadiaFieldName];
