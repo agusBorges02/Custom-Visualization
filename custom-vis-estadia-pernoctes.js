@@ -30,9 +30,9 @@ looker.plugins.visualizations.add({
       // Asignar los valores a las etiquetas correspondientes en el HTML
       if (estadiaField) {
         const estadiaValue = data[0][estadiaField.name].value;
-        document.getElementById("estadía-value").innerText = estadiaValue ? estadiaValue.toFixed(1) : "N/A";
+        document.getElementById("estadia-value").innerText = estadiaValue ? estadiaValue.toFixed(1) : "N/A";
       } else {
-        document.getElementById("estadía-value").innerText = "N/A";
+        document.getElementById("estadia-value").innerText = "N/A";
       }
   
       if (pernoctesField) {
