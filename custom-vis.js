@@ -17,7 +17,7 @@ looker.plugins.visualizations.add({
     // Calcular el total para el porcentaje
     const total = filteredData.reduce((sum, row) => sum + row[queryResponse.fields.measure_like[0].name].value, 0);
 
-    // Crear visualización de íconos
+    // Crear visualización de íconos con función de filtro
     filteredData.forEach(row => {
       const gender = row[queryResponse.fields.dimension_like[0].name].value;
       const count = row[queryResponse.fields.measure_like[0].name].value;
@@ -26,9 +26,19 @@ looker.plugins.visualizations.add({
       // Crear contenedor para cada género
       const itemContainer = document.createElement("div");
       itemContainer.style.textAlign = "center";
-      itemContainer.style.backgroundColor = "#f3f1e3"; // Fondo común para ambos géneros
-      itemContainer.style.padding = "10px 0 20px"; // Espaciado en la parte superior e inferior
-      itemContainer.style.borderRadius = "8px"; // Bordes redondeados
+      itemContainer.style.backgroundColor = "#f3f1e3";
+      itemContainer.style.padding = "10px 0 20px";
+      itemContainer.style.borderRadius = "8px";
+      itemContainer.style.cursor = "pointer"; // Cambiar cursor para indicar que es interactivo
+
+      // Añadir evento de clic para aplicar filtro
+      itemContainer.onclick = () => {
+        // Configuración del filtro
+        const filters = {};
+        filters[queryResponse.fields.dimension_like[0].name] = gender;
+        // Aplicar el filtro
+        looker.plugins.visualizations.emit("filter", filters);
+      };
 
       // Añadir ícono basado en el género
       const icon = document.createElement("img");
@@ -42,6 +52,7 @@ looker.plugins.visualizations.add({
       percentageText.textContent = `${percentage}%`;
       percentageText.style.fontSize = "20px";
       percentageText.style.marginTop = "10px";
+      percentageText.style.fontFamily = "inherit"; // Usar la fuente de Looker
 
       // Añadir el ícono y el texto al contenedor
       itemContainer.appendChild(icon);
