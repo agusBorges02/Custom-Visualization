@@ -1,6 +1,6 @@
 looker.plugins.visualizations.add({
   create: function(element, config) {
-    element.innerHTML = "<div id='custom-vis' style='display: flex; justify-content: center; gap: 50px; background-color: #f3f1e3; padding: 20px; border-radius: 10px;'></div>";
+    element.innerHTML = "<div id='custom-vis' style='display: flex; justify-content: center; gap: 50px; background-color: #f3f1e3; padding: 16px; border-radius: 10px;'></div>";
   },
 
   updateAsync: function(data, element, config, queryResponse, details, doneRendering) {
