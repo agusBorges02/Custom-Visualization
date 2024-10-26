@@ -30,9 +30,8 @@ looker.plugins.visualizations.add({
 
       // Añadir evento de clic para aplicar filtro (Alternativa)
       itemContainer.onclick = () => {
-        alert(`Se aplicaría un filtro para el género: ${gender}`);
-        // Este alert es temporal para verificar que se detecta el clic
-        // Aquí normalmente se utilizaría LookerEmbedSDK o alguna otra API de Looker si estuviera disponible
+        console.log(`Filtro activado para género: ${gender}`);
+        // Simulación de filtro en consola
       };
 
       // Añadir ícono basado en el género
