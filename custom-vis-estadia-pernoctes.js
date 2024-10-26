@@ -1,7 +1,7 @@
 looker.plugins.visualizations.add({
     create: function(element, config) {
       element.innerHTML = `
-        <div id='custom-vis' style='display: flex; justify-content: space-between; align-items: center; background-color: #f3f1e3; padding: 20px; border-radius: 10px;'>
+        <div id='custom-vis' style='display: flex; justify-content: space-between; align-items: center; background-color: #f3f1e3; padding: 12px; border-radius: 10px;'>
           <div id="estadia-container" style="text-align: center; font-family: Arial, sans-serif; width: 45%; padding: 20px;">
             <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
               <img src="https://img.icons8.com/?size=100&id=zyScOpkt9POE&format=png&color=000000" alt="Icono de Estadía" style="width:40px;"/>
