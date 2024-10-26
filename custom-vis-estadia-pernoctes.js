@@ -23,21 +23,22 @@ looker.plugins.visualizations.add({
     },
   
     updateAsync: function(data, element, config, queryResponse, details, doneRendering) {
-      // Obtener los nombres de los campos de las medidas
-      const estadiaField = queryResponse.fields.measure_like.find(field => field.label.toLowerCase().includes("estadia promedio"));
-      const pernoctesField = queryResponse.fields.measure_like.find(field => field.label.toLowerCase().includes("pernoctes promedio"));
+      // Nombres de los campos exactos según el SQL proporcionado
+      const estadiaFieldName = "datos_dashboard_estadia_promedio_distinct_visitors";
+      const pernoctesFieldName = "datos_dashboard_pernoctes_promedio_distinct_visitors";
   
       // Asignar los valores a las etiquetas correspondientes en el HTML
-      if (estadiaField) {
-        const estadiaValue = data[0][estadiaField.name].value;
-        document.getElementById("estadia-value").innerText = estadiaValue ? estadiaValue.toFixed(1) : "N/A";
+      const estadiaData = data[0][estadiaFieldName];
+      const pernoctesData = data[0][pernoctesFieldName];
+  
+      if (estadiaData && estadiaData.value != null) {
+        document.getElementById("estadia-value").innerText = estadiaData.value.toFixed(1);
       } else {
         document.getElementById("estadia-value").innerText = "N/A";
       }
   
-      if (pernoctesField) {
-        const pernoctesValue = data[0][pernoctesField.name].value;
-        document.getElementById("pernoctes-value").innerText = pernoctesValue ? pernoctesValue.toFixed(1) : "N/A";
+      if (pernoctesData && pernoctesData.value != null) {
+        document.getElementById("pernoctes-value").innerText = pernoctesData.value.toFixed(1);
       } else {
         document.getElementById("pernoctes-value").innerText = "N/A";
       }
