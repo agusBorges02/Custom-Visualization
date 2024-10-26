@@ -28,11 +28,11 @@ looker.plugins.visualizations.add({
       itemContainer.style.textAlign = "center";
       itemContainer.style.cursor = "pointer"; // Cambiar cursor para indicar que es interactivo
 
-      // Aplicar evento de filtro al hacer clic
+      // Añadir evento de clic para aplicar filtro (Alternativa)
       itemContainer.onclick = () => {
-        const filters = {};
-        filters[queryResponse.fields.dimension_like[0].name] = gender;
-        looker.plugins.visualizations.emit("filter", filters);
+        alert(`Se aplicaría un filtro para el género: ${gender}`);
+        // Este alert es temporal para verificar que se detecta el clic
+        // Aquí normalmente se utilizaría LookerEmbedSDK o alguna otra API de Looker si estuviera disponible
       };
 
       // Añadir ícono basado en el género
